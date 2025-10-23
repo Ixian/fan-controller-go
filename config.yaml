@@ -1,0 +1,29 @@
+server:
+  metrics_port: 9090
+  log_level: info
+
+temperature:
+  target_hdd: 38.0        # Target temp for warmest N disks (°C)
+  max_hdd: 40.0           # Emergency override temp (°C)
+  max_cpu: 75.0           # CPU emergency temp (°C)
+  poll_interval: 30s      # How often to check temps and adjust fans
+  warmest_disks: 4        # Average temp of this many warmest disks
+
+fans:
+  min_duty: 30            # Minimum fan duty cycle (%)
+  max_duty: 100           # Maximum fan duty cycle (%)
+  startup_duty: 50        # Initial fan duty on startup (%)
+
+pid:
+  kp: 5.0                 # Proportional gain
+  ki: 0.1                 # Integral gain
+  kd: 20.0                # Derivative gain
+  integral_max: 50.0      # Anti-windup limit for integral term
+
+disks:
+  exclude_patterns:       # Regex patterns for disks to ignore
+    - "^loop"             # Loop devices
+    - "^sr"               # CD-ROM
+    - "^zram"             # Compressed RAM
+    - "^zd"               # ZFS zvols
+    - "^dm-"              # Device mapper
