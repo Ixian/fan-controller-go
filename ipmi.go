@@ -196,7 +196,7 @@ func TestIPMICommand() error {
 	log.Println("Waiting 10 seconds for fans to return to 100%...")
 	time.Sleep(10 * time.Second)
 	
-	final, err := GetFanSpeeds()
+	_, err := GetFanSpeeds()
 	if err != nil {
 		return fmt.Errorf("failed to get final fan speeds: %w", err)
 	}

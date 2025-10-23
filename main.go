@@ -226,7 +226,7 @@ func checkEmergencyConditions(cpuTemp float64, maxDiskTemp int, config *Config) 
 	}
 	
 	// Check disk emergency temperature
-	if maxDiskTemp > config.Temperature.MaxHDD {
+	if maxDiskTemp > int(config.Temperature.MaxHDD) {
 		return "hdd_temp"
 	}
 	
