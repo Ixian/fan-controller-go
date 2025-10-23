@@ -4,9 +4,9 @@ server:
 
 temperature:
   target_hdd: 38.0        # Target temp for warmest N disks (°C)
-  max_hdd: 40.0           # Emergency override temp (°C)
+  max_hdd: 42.0           # Emergency override temp (°C)
   max_cpu: 75.0           # CPU emergency temp (°C)
-  poll_interval: 30s      # How often to check temps and adjust fans
+  poll_interval: 60s      # How often to check temps and adjust fans
   warmest_disks: 4        # Average temp of this many warmest disks
 
 fans:
@@ -15,10 +15,10 @@ fans:
   startup_duty: 50        # Initial fan duty on startup (%)
 
 pid:
-  kp: 5.0                 # Proportional gain
-  ki: 0.1                 # Integral gain
-  kd: 20.0                # Derivative gain
-  integral_max: 50.0      # Anti-windup limit for integral term
+  kp: 1.5                 # Proportional gain
+  ki: 0.05                # Integral gain
+  kd: 2.0                 # Derivative gain
+  integral_max: 20.0      # Anti-windup limit for integral term
 
 disks:
   exclude_patterns:       # Regex patterns for disks to ignore

@@ -260,6 +260,50 @@ Restart Telegraf after adding this configuration.
 3. Check fan curve: Verify fans can provide adequate cooling
 4. Monitor metrics: Use Grafana to visualize temperature trends
 
+### PID Oscillation (Fan Cycling)
+
+**Symptoms**: 
+- Fan duty cycle rapidly switching between low (30-60%) and high (100%) values
+- Fan RPM following the same pattern
+- Temperature readings relatively stable but fans overreacting
+- Logs show frequent "EMERGENCY" mode entries
+
+**Root Cause**: PID parameters too aggressive, causing overcorrection
+
+**Solutions**:
+1. **Reduce Derivative Gain (Kd)**: Most critical fix
+   - Default: `kd: 20.0` → Recommended: `kd: 2.0`
+   - Derivative gain amplifies rate of change, causing overcorrection
+
+2. **Reduce Proportional Gain (Kp)**:
+   - Default: `kp: 5.0` → Recommended: `kp: 1.5`
+   - Less aggressive response to temperature errors
+
+3. **Reduce Integral Gain (Ki)**:
+   - Default: `ki: 0.1` → Recommended: `ki: 0.05`
+   - Slower accumulation of error over time
+
+4. **Increase Poll Interval**:
+   - Default: `poll_interval: 30s` → Recommended: `poll_interval: 60s`
+   - Gives system more time to respond to changes
+
+5. **Raise Emergency Threshold**:
+   - Default: `max_hdd: 40.0` → Recommended: `max_hdd: 42.0`
+   - Reduces frequency of emergency mode triggers
+
+**Final Working Configuration**:
+```yaml
+pid:
+  kp: 1.5                 # Proportional gain (reduced from 5.0)
+  ki: 0.05                # Integral gain (reduced from 0.1)
+  kd: 2.0                 # Derivative gain (reduced from 20.0)
+  integral_max: 20.0      # Anti-windup limit (reduced from 50.0)
+
+temperature:
+  max_hdd: 42.0           # Emergency threshold (increased from 40.0)
+  poll_interval: 60s      # Poll interval (increased from 30s)
+```
+
 ## Safety Features
 
 ### Emergency Overrides
