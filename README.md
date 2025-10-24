@@ -300,9 +300,38 @@ pid:
   integral_max: 20.0      # Anti-windup limit (reduced from 50.0)
 
 temperature:
-  max_hdd: 42.0           # Emergency threshold (increased from 40.0)
+  max_hdd: 45.0           # Emergency threshold (increased from 40.0)
   poll_interval: 60s      # Poll interval (increased from 30s)
+
+fans:
+  min_duty: 60            # Minimum duty cycle (increased from 30%)
 ```
+
+### Emergency Mode Oscillation (Most Common Issue)
+
+**Symptoms**: 
+- Regular sawtooth pattern: fans cycle between 40-60% and 100% every few minutes
+- HDD temperatures consistently at 45-46°C
+- Logs show frequent "EMERGENCY: hdd_temp" entries
+- Fan duty cycle never stabilizes
+
+**Root Cause**: Minimum duty cycle too low, allowing HDDs to heat up to emergency threshold
+
+**Solution**:
+1. **Increase min_duty**: Most critical fix
+   - Default: `min_duty: 30` → Recommended: `min_duty: 60`
+   - Prevents HDDs from heating up to emergency threshold
+   - Maintains adequate baseline cooling
+
+2. **Raise emergency threshold**:
+   - Default: `max_hdd: 40.0` → Recommended: `max_hdd: 45.0`
+   - Gives more headroom before emergency mode
+
+3. **Verify target temperature is realistic**:
+   - Default: `target_hdd: 38.0` (may be too low for some systems)
+   - Consider raising to 40-42°C if system can't maintain 38°C
+
+**Key Insight**: The ASRock X570D4U-2L2T has no dedicated CPU fan - all 6 fans are system fans controlled by HDD temperature. If min_duty is too low, HDDs heat up, trigger emergency mode, fans go to 100%, HDDs cool, fans drop to min_duty, cycle repeats.
 
 ## Safety Features
 

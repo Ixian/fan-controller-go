@@ -4,13 +4,13 @@ server:
 
 temperature:
   target_hdd: 38.0        # Target temp for warmest N disks (°C)
-  max_hdd: 42.0           # Emergency override temp (°C)
+  max_hdd: 45.0           # Emergency override temp (°C)
   max_cpu: 75.0           # CPU emergency temp (°C)
   poll_interval: 60s      # How often to check temps and adjust fans
   warmest_disks: 4        # Average temp of this many warmest disks
 
 fans:
-  min_duty: 30            # Minimum fan duty cycle (%)
+  min_duty: 60            # Minimum fan duty cycle (%)
   max_duty: 100           # Maximum fan duty cycle (%)
   startup_duty: 50        # Initial fan duty on startup (%)
 
