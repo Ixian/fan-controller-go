@@ -26,3 +26,5 @@ config.local.yaml
 
 # Docker
 .dockerignore
+coverage.out
+coverage.html
